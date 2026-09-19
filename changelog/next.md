@@ -1,6 +1,7 @@
 ## New Features
 
 - Added a `title` property to all window types, previously only on `FloatingWindow`.
+- Added a `title` property to `WlSessionLockSurface`.
 
 ## Bug Fixes
 

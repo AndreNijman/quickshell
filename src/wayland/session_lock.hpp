@@ -123,6 +123,10 @@ class WlSessionLockSurface: public Reloadable {
 	Q_PROPERTY(qint32 height READ height NOTIFY heightChanged);
 	/// The screen that the surface is displayed on.
 	Q_PROPERTY(QuickshellScreenInfo* screen READ screen NOTIFY screenChanged);
+	/// The surface's title. Defaults to an empty string.
+	///
+	/// Assistive technology uses this as the window's name.
+	Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged);
 	/// The background color of the window. Defaults to white.
 	///
 	/// > [!WARNING] This seems to behave weirdly when using transparent colors on some systems.
@@ -166,6 +170,9 @@ public:
 	[[nodiscard]] QuickshellScreenInfo* screen() const;
 	void setScreen(QScreen* qscreen);
 
+	[[nodiscard]] QString title() const;
+	void setTitle(const QString& title);
+
 	[[nodiscard]] QColor color() const;
 	void setColor(QColor color);
 
@@ -176,6 +183,7 @@ signals:
 	void widthChanged();
 	void heightChanged();
 	void screenChanged();
+	void titleChanged();
 	void colorChanged();
 
 private slots:
@@ -187,6 +195,7 @@ private:
 	QQuickWindow* window = nullptr;
 	QQuickItem* mContentItem;
 	QScreen* mScreen = nullptr;
+	QString mTitle;
 	QColor mColor = Qt::white;
 	LockWindowExtension* ext;
 };

@@ -262,6 +262,7 @@ void WlSessionLockSurface::onReload(QObject* oldInstance) {
 	this->mContentItem->setHeight(this->height());
 
 	if (this->mScreen != nullptr) this->window->setScreen(this->mScreen);
+	this->window->setTitle(this->mTitle);
 	this->window->setColor(this->mColor);
 
 	// clang-format off
@@ -269,6 +270,7 @@ void WlSessionLockSurface::onReload(QObject* oldInstance) {
 	QObject::connect(this->window, &QWindow::widthChanged, this, &WlSessionLockSurface::widthChanged);
 	QObject::connect(this->window, &QWindow::heightChanged, this, &WlSessionLockSurface::heightChanged);
 	QObject::connect(this->window, &QWindow::screenChanged, this, &WlSessionLockSurface::screenChanged);
+	QObject::connect(this->window, &QWindow::windowTitleChanged, this, &WlSessionLockSurface::titleChanged);
 	QObject::connect(this->window, &QQuickWindow::colorChanged, this, &WlSessionLockSurface::colorChanged);
 	// clang-format on
 }
@@ -347,6 +349,18 @@ void WlSessionLockSurface::setScreen(QScreen* qscreen) {
 }
 
 void WlSessionLockSurface::onScreenDestroyed() { this->mScreen = nullptr; }
+
+QString WlSessionLockSurface::title() const {
+	if (this->window == nullptr) return this->mTitle;
+	else return this->window->title();
+}
+
+void WlSessionLockSurface::setTitle(const QString& title) {
+	if (this->window == nullptr) {
+		this->mTitle = title;
+		emit this->titleChanged();
+	} else this->window->setTitle(title);
+}
 
 QColor WlSessionLockSurface::color() const {
 	if (this->window == nullptr) return this->mColor;
