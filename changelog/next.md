@@ -1,3 +1,7 @@
+## New Features
+
+- Added a `title` property to all window types, previously only on `FloatingWindow`.
+
 ## Bug Fixes
 
 - Fixed main process crashes on pam subprocess misbehavior.

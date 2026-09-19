@@ -118,6 +118,10 @@ qreal WindowInterface::devicePixelRatio() const { return this->proxyWindow()->de
 QuickshellScreenInfo* WindowInterface::screen() const { return this->proxyWindow()->screen(); };
 void WindowInterface::setScreen(QuickshellScreenInfo* screen) const { this->proxyWindow()->setScreen(screen); };
 
+QBindable<QString> WindowInterface::bindableTitle() const {
+	return this->proxyWindow()->bindableTitle();
+}
+
 QColor WindowInterface::color() const { return this->proxyWindow()->color(); };
 void WindowInterface::setColor(QColor color) const { this->proxyWindow()->setColor(color); };
 
@@ -148,6 +152,7 @@ void WindowInterface::connectSignals() const {
 	QObject::connect(window, &ProxyWindowBase::devicePixelRatioChanged, this, &WindowInterface::devicePixelRatioChanged);
 	QObject::connect(window, &ProxyWindowBase::screenChanged, this, &WindowInterface::screenChanged);
 	QObject::connect(window, &ProxyWindowBase::windowTransformChanged, this, &WindowInterface::windowTransformChanged);
+	QObject::connect(window, &ProxyWindowBase::titleChanged, this, &WindowInterface::titleChanged);
 	QObject::connect(window, &ProxyWindowBase::colorChanged, this, &WindowInterface::colorChanged);
 	QObject::connect(window, &ProxyWindowBase::maskChanged, this, &WindowInterface::maskChanged);
 	QObject::connect(window, &ProxyWindowBase::surfaceFormatChanged, this, &WindowInterface::surfaceFormatChanged);

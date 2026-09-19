@@ -2,6 +2,7 @@
 
 #include <qcolor.h>
 #include <qobject.h>
+#include <qproperty.h>
 #include <qqmlintegration.h>
 #include <qqmllist.h>
 #include <qquickitem.h>
@@ -84,6 +85,10 @@ class WindowInterface: public Reloadable {
 	/// This property is intended to be used to force a binding update,
 	/// along with map[To|From]Item (which is not reactive).
 	Q_PROPERTY(QObject* windowTransform READ windowTransform NOTIFY windowTransformChanged);
+	/// The window's title. Defaults to an empty string.
+	///
+	/// Assistive technology uses this as the window's name.
+	Q_PROPERTY(QString title READ default WRITE default NOTIFY titleChanged BINDABLE bindableTitle);
 	/// The background color of the window. Defaults to white.
 	///
 	/// > [!WARNING] If the window color is opaque before it is made visible,
@@ -231,6 +236,8 @@ public:
 
 	[[nodiscard]] QObject* windowTransform() const { return nullptr; } // NOLINT
 
+	[[nodiscard]] QBindable<QString> bindableTitle() const;
+
 	[[nodiscard]] QColor color() const;
 	void setColor(QColor color) const;
 
@@ -267,6 +274,7 @@ signals:
 	void devicePixelRatioChanged();
 	void screenChanged();
 	void windowTransformChanged();
+	void titleChanged();
 	void colorChanged();
 	void maskChanged();
 	void surfaceFormatChanged();

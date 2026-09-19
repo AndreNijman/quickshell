@@ -48,6 +48,7 @@ class ProxyWindowBase: public Reloadable {
 	Q_PROPERTY(QQuickWindow* _backingWindow READ backingWindow);
 	Q_PROPERTY(QQuickItem* contentItem READ contentItem CONSTANT);
 	Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged);
+	Q_PROPERTY(QString title READ default WRITE default NOTIFY titleChanged BINDABLE bindableTitle);
 	Q_PROPERTY(qint32 implicitWidth READ implicitWidth WRITE setImplicitWidth NOTIFY implicitWidthChanged);
 	Q_PROPERTY(qint32 implicitHeight READ implicitHeight WRITE setImplicitHeight NOTIFY implicitHeightChanged);
 	Q_PROPERTY(qint32 width READ width WRITE setWidth NOTIFY widthChanged);
@@ -136,6 +137,8 @@ public:
 	[[nodiscard]] QuickshellScreenInfo* screen() const;
 	virtual void setScreen(QuickshellScreenInfo* screen);
 
+	[[nodiscard]] QBindable<QString> bindableTitle() { return &this->bTitle; }
+
 	[[nodiscard]] QColor color() const;
 	virtual void setColor(QColor color);
 
@@ -168,6 +171,7 @@ signals:
 	void devicePixelRatioChanged();
 	void windowTransformChanged();
 	void screenChanged();
+	void titleChanged();
 	void colorChanged();
 	void maskChanged();
 	void surfaceFormatChanged();
@@ -188,6 +192,8 @@ private slots:
 	void onExposed();
 
 protected:
+	void onTitleChanged();
+
 	bool mVisible = true;
 	QScreen* mScreen = nullptr;
 	QColor mColor = Qt::white;
@@ -226,6 +232,9 @@ protected:
 	    bBackerVisibility,
 	    &ProxyWindowBase::backerVisibilityChanged
 	);
+
+public:
+	Q_OBJECT_BINDABLE_PROPERTY(ProxyWindowBase, QString, bTitle, &ProxyWindowBase::onTitleChanged);
 
 private:
 	void polishItems();

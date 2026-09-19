@@ -34,7 +34,6 @@ public:
 signals:
 	void minimumSizeChanged();
 	void maximumSizeChanged();
-	void titleChanged();
 	void parentWindowChanged();
 
 private slots:
@@ -43,7 +42,6 @@ private slots:
 private:
 	void onMinimumSizeChanged();
 	void onMaximumSizeChanged();
-	void onTitleChanged();
 	void targetVisibleChanged();
 
 	QObject* mParentWindow = nullptr;
@@ -59,13 +57,6 @@ private:
 	);
 
 public:
-	Q_OBJECT_BINDABLE_PROPERTY(
-	    ProxyFloatingWindow,
-	    QString,
-	    bTitle,
-	    &ProxyFloatingWindow::onTitleChanged
-	);
-
 	Q_OBJECT_BINDABLE_PROPERTY(
 	    ProxyFloatingWindow,
 	    QSize,
@@ -86,8 +77,6 @@ public:
 class FloatingWindowInterface: public WindowInterface {
 	Q_OBJECT;
 	// clang-format off
-	/// Window title.
-	Q_PROPERTY(QString title READ default WRITE default NOTIFY titleChanged BINDABLE bindableTitle);
 	/// Minimum window size given to the window system.
 	Q_PROPERTY(QSize minimumSize READ default WRITE default NOTIFY minimumSizeChanged BINDABLE bindableMinimumSize);
 	/// Maximum window size given to the window system.
@@ -115,7 +104,6 @@ public:
 
 	[[nodiscard]] QBindable<QSize> bindableMinimumSize() { return &this->window->bMinimumSize; }
 	[[nodiscard]] QBindable<QSize> bindableMaximumSize() { return &this->window->bMaximumSize; }
-	[[nodiscard]] QBindable<QString> bindableTitle() { return &this->window->bTitle; }
 
 	[[nodiscard]] bool isMinimized() const;
 	void setMinimized(bool minimized);
@@ -135,7 +123,6 @@ public:
 signals:
 	void minimumSizeChanged();
 	void maximumSizeChanged();
-	void titleChanged();
 	void minimizedChanged();
 	void maximizedChanged();
 	void fullscreenChanged();

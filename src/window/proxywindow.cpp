@@ -228,6 +228,7 @@ void ProxyWindowBase::completeWindow() {
 
 	this->trySetWidth(this->implicitWidth());
 	this->trySetHeight(this->implicitHeight());
+	this->window->setTitle(this->bTitle);
 	this->setColor(this->mColor);
 	this->updateMask();
 	QQuickWindowPrivate::get(this->window)->updatesEnabled = this->mUpdatesEnabled;
@@ -433,6 +434,11 @@ QScreen* ProxyWindowBase::qscreen() const {
 
 QuickshellScreenInfo* ProxyWindowBase::screen() const {
 	return QuickshellTracked::instance()->screenInfo(this->qscreen());
+}
+
+void ProxyWindowBase::onTitleChanged() {
+	if (this->window) this->window->setTitle(this->bTitle);
+	emit this->titleChanged();
 }
 
 QColor ProxyWindowBase::color() const { return this->mColor; }

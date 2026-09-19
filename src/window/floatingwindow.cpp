@@ -35,7 +35,6 @@ void ProxyFloatingWindow::targetVisibleChanged() {
 void ProxyFloatingWindow::connectWindow() {
 	this->ProxyWindowBase::connectWindow();
 
-	this->window->setTitle(this->bTitle);
 	this->window->setMinimumSize(this->bMinimumSize);
 	this->window->setMaximumSize(this->bMaximumSize);
 }
@@ -69,11 +68,6 @@ void ProxyFloatingWindow::trySetHeight(qint32 implicitHeight) {
 	if (!this->window->isVisible()) {
 		this->ProxyWindowBase::trySetHeight(implicitHeight);
 	}
-}
-
-void ProxyFloatingWindow::onTitleChanged() {
-	if (this->window) this->window->setTitle(this->bTitle);
-	emit this->titleChanged();
 }
 
 void ProxyFloatingWindow::onMinimumSizeChanged() {
@@ -130,7 +124,6 @@ FloatingWindowInterface::FloatingWindowInterface(QObject* parent)
 	this->connectSignals();
 
 	// clang-format off
-	QObject::connect(this->window, &ProxyFloatingWindow::titleChanged, this, &FloatingWindowInterface::titleChanged);
 	QObject::connect(this->window, &ProxyFloatingWindow::minimumSizeChanged, this, &FloatingWindowInterface::minimumSizeChanged);
 	QObject::connect(this->window, &ProxyFloatingWindow::maximumSizeChanged, this, &FloatingWindowInterface::maximumSizeChanged);
 	QObject::connect(this->window, &ProxyFloatingWindow::parentWindowChanged, this, &FloatingWindowInterface::parentWindowChanged);
